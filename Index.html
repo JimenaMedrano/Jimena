@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coraline - Mundo Artístico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Creepster&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'MedievalSharp', cursive;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23333" stroke-width="0.5"/><circle cx="50" cy="50" r="20" fill="none" stroke="%23444" stroke-width="0.5"/></svg>');
+            opacity: 0.05;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        .title {
+            font-family: 'Creepster', cursive;
+            font-size: 5rem;
+            color: #ffdd00; /* Cambiado a amarillo */
+            text-shadow: 0 0 15px rgba(255, 221, 0, 0.7);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 221, 0, 0.7);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 221, 0, 0.9), 0 0 30px rgba(255, 221, 0, 0.5);
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            margin-bottom: 40px;
+        }
+        
+        .menu {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .menu-item {
+            background: rgba(30, 30, 50, 0.7);
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 15px 25px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-item:hover {
+            background: rgba(60, 60, 90, 0.8);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: #ffdd00;
+        }
+        
+        .menu-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 221, 0, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .menu-item:hover::before {
+            left: 100%;
+        }
+        
+        .content-section {
+            display: none;
+            padding: 30px;
+            background: rgba(20, 20, 35, 0.8);
+            border-radius: 15px;
+            border: 1px solid #444;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: #ffdd00; /* Cambiado a amarillo */
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 221, 0, 0.5);
+        }
+        
+        .content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .content p {
+            margin-bottom: 20px;
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .character-card {
+            background: rgba(40, 40, 60, 0.7);
+            border: 1px solid #555;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: #ffdd00;
+        }
+        
+        .character-name {
+            font-size: 1.5rem;
+            color: #ffdd00; /* Cambiado a amarillo */
+            margin: 15px 0 10px;
+        }
+        
+        .media-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .media-item {
+            background: rgba(40, 40, 60, 0.7);
+            border: 1px solid #555;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .media-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: #ffdd00;
+        }
+        
+        .media-title {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #ffdd00; /* Cambiado a amarillo */
+            background: rgba(30, 30, 50, 0.8);
+        }
+        
+        .media-content {
+            padding: 0;
+        }
+        
+        .media-content img, .media-content iframe {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid #444;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        
+        .copyright {
+            font-family: 'MedievalSharp', cursive;
+            color: #ffdd00; /* Cambiado a amarillo */
+            font-size: 1.1rem;
+        }
+        
+        .theme-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .theme-btn {
+            background: rgba(30, 30, 50, 0.7);
+            border: 1px solid #555;
+            border-radius: 20px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-btn:hover {
+            background: rgba(60, 60, 90, 0.8);
+            border-color: #ffdd00;
+        }
+        
+        .theme-btn.active {
+            background: rgba(255, 221, 0, 0.3);
+            border-color: #ffdd00;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+            
+            .menu {
+                gap: 15px;
+            }
+            
+            .menu-item {
+                padding: 12px 18px;
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">Coraline</h1>
+            <p class="subtitle">Un viaje a través del mundo detrás de la puerta</p>
+            
+            <div class="menu">
+                <div class="menu-item" onclick="showSection('temas')">Temas</div>
+                <div class="menu-item" onclick="showSection('personajes')">Personajes</div>
+                <div class="menu-item" onclick="showSection('estreno')">Estreno</div>
+                <div class="menu-item" onclick="showSection('resumen')">Resumen</div>
+            </div>
+        </header>
+        
+        <div id="temas" class="content-section">
+            <h2 class="section-title">Temas Principales</h2>
+            <div class="content">
+                <p>Coraline explora varios temas profundos a través de su narrativa fantástica:</p>
+                
+                <div class="theme-buttons">
+                    <div class="theme-btn active">Aventura</div>
+                    <div class="theme-btn">Misterio</div>
+                    <div class="theme-btn">Terror</div>
+                    <div class="theme-btn">Familia</div>
+                    <div class="theme-btn">Valentía</div>
+                </div>
+                
+                <p style="margin-top: 20px;">La película aborda la necesidad de apreciar la vida real, incluso con sus imperfecciones, y la importancia de la familia y el valor de la valentía frente a lo desconocido. El contraste entre el mundo real y el mundo "perfecto" detrás de la puerta simboliza las ilusiones que a veces creamos para escapar de nuestras responsabilidades y problemas.</p>
+                
+                <p>La historia también toca temas de identidad, autonomía y el descubrimiento de la propia fuerza interior. Coraline debe confrontar sus miedos y tomar decisiones difíciles para salvarse a sí misma y a su familia.</p>
+            </div>
+        </div>
+        
+        <div id="personajes" class="content-section">
+            <h2 class="section-title">Personajes Principales</h2>
+            <div class="character-grid">
+                <div class="character-card">
+                    <div style="font-size: 3rem; color: #ffdd00;">👧</div>
+                    <h3 class="character-name">Coraline Jones</h3>
+                    <p>Una niña curiosa y aventurera que se muda a una nueva casa y descubre un mundo paralelo detrás de una pequeña puerta.</p>
+                </div>
+                
+                <div class="character-card">
+                    <div style="font-size: 3rem; color: #ffdd00;">👧</div>
+                    <h3 class="character-name">Otra Madre</h3>
+                    <p>La versión alternativa de la madre de Coraline en el otro mundo, con botones en lugar de ojos y una naturaleza manipuladora.</p>
+                </div>
+                
+                <div class="character-card">
+                    <div style="font-size: 3rem; color: #ffdd00;">👨</div>
+                    <h3 class="character-name">Otro Padre</h3>
+                    <p>La versión alternativa del padre de Coraline, más amable pero igualmente atrapado en el mundo de la Otra Madre.</p>
+                </div>
+                
+                <div class="character-card">
+                    <div style="font-size: 3rem; color: #ffdd00;">👵</div>
+                    <h3 class="character-name">La Señora Espino</h3>
+                    <p>Una anciana excéntrica que vive en la misma casa y advierte a Coraline sobre los peligros del otro mundo.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="estreno" class="content-section">
+            <h2 class="section-title">Estreno</h2>
+            <div class="content">
+                <p><strong>Fecha de estreno:</strong> 6 de febrero de 2009 (Estados Unidos)</p>
+                <p><strong>Director:</strong> Henry Selick</p>
+                <p><strong>Género:</strong> Animación, Fantasía, Terror</p>
+                <p><strong>Duración:</strong> 100 minutos</p>
+                <p><strong>Basada en:</strong> La novela "Coraline" de Neil Gaiman</p>
+                <p><strong>Estudio:</strong> Laika Entertainment</p>
+                <p><strong>Idioma original:</strong> Inglés</p>
+                <p><strong>Voces originales:</strong> Dakota Fanning (Coraline), Teri Hatcher (Madre/Otra Madre), Jennifer Saunders (Señora Espino), Ian McShane (Sr. Bobinsky)</p>
+                <p><strong>País de producción:</strong> Estados Unidos</p>
+                <p><strong>Recaudación:</strong> Más de 124 millones de dólares</p>
+            </div>
+        </div>
+        
+        <div id="resumen" class="content-section">
+            <h2 class="section-title">Resumen</h2>
+            <div class="content">
+                <p>Coraline Jones es una niña de once años que se muda con sus padres a una vieja casa de campo en Oregón. Su madre y padre están ocupados con sus trabajos, dejando a Coraline aburrida y sola.</p>
+                
+                <p>Una tarde, mientras explora la casa, Coraline descubre una pequeña puerta cerrada que conduce a un pasillo oscuro. Esa noche, una ratita le muestra a Coraline una llave que abre esa puerta, revelando un mundo paralelo casi idéntico al suyo, pero con pequeñas diferencias.</p>
+                
+                <p>En este "otro mundo", sus padres son más atentos y divertidos, hay vecinos más interesantes y todo parece perfecto. Sin embargo, los habitantes de este mundo tienen botones en lugar de ojos, y la "Otra Madre" intenta atrapar a Coraline para siempre en este mundo.</p>
+                
+                <p>Coraline debe usar su inteligencia y valentía para escapar del mundo de la Otra Madre y salvar a sus padres y a los otros niños atrapados antes de que sea demasiado tarde.</p>
+            </div>
+        </div>
+        
+        <div class="content-section" id="videos">
+            <h2 class="section-title">Videos Relacionados</h2>
+            <div class="media-section">
+                <div class="media-item">
+                    <div class="media-title">Tráiler Oficial</div>
+                    <div class="media-content">
+                        <iframe src="https://www.youtube.com/embed/8o1oOc9c8tY" title="Tráiler oficial de Coraline" allowfullscreen></iframe>
+                    </div>
+                </div>
+                
+                <div class="media-item">
+                    <div class="media-title">La Canción de la Otra Madre</div>
+                    <div class="media-content">
+                        <iframe src="https://www.youtube.com/embed/6v1pC1g4w9A" title="La canción de la Otra Madre" allowfullscreen></iframe>
+                    </div>
+                </div>
+                
+                <div class="media-item">
+                    <div class="media-title">Escena de la Puerta Secreta</div>
+                    <div class="media-content">
+                        <iframe src="https://www.youtube.com/embed/3d7a3LpDzFg" title="Escena de la puerta secreta" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="imagenes">
+            <h2 class="section-title">Galería de Imágenes</h2>
+            <div class="media-section">
+                <div class="media-item">
+                    <div class="media-title">Coraline y la Otra Madre</div>
+                    <div class="media-content">
+                        <img src="https://picsum.photos/seed/coraline-other-mother/600/340.jpg" alt="Coraline y la Otra Madre">
+                    </div>
+                </div>
+                
+                <div class="media-item">
+                    <div class="media-title">El Mundo Detrás de la Puerta</div>
+                    <div class="media-content">
+                        <img src="https://picsum.photos/seed/coraline-behind-door/600/340.jpg" alt="El mundo detrás de la puerta">
+                    </div>
+                </div>
+                
+                <div class="media-item">
+                    <div class="media-title">Coraline con Botones</div>
+                    <div class="media-content">
+                        <img src="https://picsum.photos/seed/coraline-buttons/600/340.jpg" alt="Coraline con botones">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p class="copyright">© 2023 Sitio Web Artístico de Coraline - Diseñado por Jimena</p>
+            <p>Todos los derechos de la película "Coraline" pertenecen a sus respectivos propietarios.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Mostrar la sección de temas por defecto
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('temas');
+            
+            // Activar el primer botón de tema
+            const firstThemeBtn = document.querySelector('.theme-btn');
+            if (firstThemeBtn) {
+                firstThemeBtn.addEventListener('click', function() {
+                    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            }
+        });
+        
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Mostrar la sección seleccionada
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.display = 'block';
+            }
+            
+            // Mostrar videos e imágenes si se selecciona estreno o resumen
+            if (sectionId === 'estreno' || sectionId === 'resumen') {
+                document.getElementById('videos').style.display = 'block';
+                document.getElementById('imagenes').style.display = 'block';
+            } else {
+                document.getElementById('videos').style.display = 'none';
+                document.getElementById('imagenes').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
